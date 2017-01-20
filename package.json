@@ -1,0 +1,8 @@
+{
+  "name": "formatType",
+  "version": "1.0.0",
+  "main": "js/formatType",
+  "dependencies": {
+    "in-array": "aleclarson/in-array#1.0.0"
+  }
+}
