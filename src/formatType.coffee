@@ -1,51 +1,40 @@
 
-inArray = require "in-array"
+formatType = (type, startWithArticle) ->
 
-module.exports = (type, startWithArticle) ->
-
-  if Array.isArray type
-    result = formatTypeNames type
-
-  else result = getTypeName type
+  string =
+    if Array.isArray type
+    then formatTypes type
+    else getName type
 
   if startWithArticle
-    result = addArticle result
+  then prependArticle string
+  else string
 
-  return result
+module.exports = formatType
 
-vowels = [ "a", "e", "i", "o", "u" ]
+#
+# Helpers
+#
 
-addArticle = (string) ->
+formatTypes = (types) ->
+  {length} = types
 
-  if inArray vowels, string[0].toLowerCase()
-    return "an " + string
+  if length is 1
+    return getName types[0]
 
-  return "a " + string
+  names = types.map getName
 
-formatTypeNames = (types, options) ->
+  if length is 2
+    return names.join " or "
 
-  typeNames = []
+  names.push "or " + names.pop()
+  return names.join ", "
 
-  for type in types
-    typeNames.push getTypeName type
+getName = (type) ->
+  type.displayName or type.name or null
 
-  typeCount = typeNames.length
-
-  if typeCount is 1
-    return typeNames[0]
-
-  else if typeCount is 2
-    return typeNames[0] + " or " + typeNames[1]
-
-  lastType = typeNames.pop()
-  return typeNames.join(", ") + ", or " + lastType
-
-getTypeName = (type, options) ->
-
-  if type.name
-    return type.name
-
-  if type.getName
-    return type.getName()
-
-  return "[unknown type]"
+vowels = "aeiou"
+prependArticle = (string) ->
+  if 0 > vowels.indexOf string[0].toLowerCase()
+  then "a " + string
+  else "an " + string
