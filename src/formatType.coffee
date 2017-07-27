@@ -31,7 +31,7 @@ formatTypes = (types) ->
   return names.join ", "
 
 getName = (type) ->
-  type.displayName or type.name or null
+  type.displayName or type.name or ""
 
 vowels = "aeiou"
 prependArticle = (string) ->
